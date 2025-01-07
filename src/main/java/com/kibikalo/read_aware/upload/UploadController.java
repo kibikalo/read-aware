@@ -1,6 +1,7 @@
 package com.kibikalo.read_aware.upload;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.kibikalo.read_aware.upload.service.UploadService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,37 +9,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 @Controller
 @RequestMapping("/api/epub")
 public class UploadController {
 
-    @Value("${file.upload-dir}")
-    private String uploadDir;
+    private final UploadService uploadService;
+
+    public UploadController(UploadService uploadService) {
+        this.uploadService = uploadService;
+    }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
-        if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("No file uploaded.");
-        }
-
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
-            // Save file to the server
-            Path path = Paths.get(uploadDir + file.getOriginalFilename());
-            Files.createDirectories(path.getParent());
-            Files.write(path, file.getBytes());
-
-            // Log the file name
-            System.out.println("Uploaded file: " + file.getOriginalFilename());
-
-            return ResponseEntity.ok("File uploaded successfully: " + file.getOriginalFilename());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body("Could not upload the file: " + file.getOriginalFilename());
+            uploadService.uploadFile(file);
+            return ResponseEntity.ok("File uploaded and processed successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }
     }
 }
