@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "book_data")
-public class BookData {
+@Table(name = "book_metadata")
+public class BookMetadata {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +27,12 @@ public class BookData {
     @JoinColumn(name = "toc_id", referencedColumnName = "id")
     private TableOfContents tableOfContents;
 
+    private String filePath;
     private String coverImagePath;
+
+    public Long getId() {
+        return id;
+    }
 
     public String getTitle() {
         return title;
@@ -99,6 +104,14 @@ public class BookData {
 
     public void setCoverImagePath(String coverImagePath) {
         this.coverImagePath = coverImagePath;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }
 
