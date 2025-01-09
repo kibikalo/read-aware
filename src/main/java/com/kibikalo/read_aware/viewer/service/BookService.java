@@ -9,6 +9,9 @@ import com.kibikalo.read_aware.viewer.ResourceNotFoundException;
 import com.kibikalo.read_aware.viewer.dto.BookMapper;
 import com.kibikalo.read_aware.viewer.dto.BookMetadataDto;
 import com.kibikalo.read_aware.viewer.dto.TableOfContentsDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -47,6 +50,16 @@ public class BookService {
                 .map(bookMapper::toDto)  // Convert each BookMetadata to BookMetadataDto
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Returns DTOs for Size books in the repository.
+     */
+    public Page<BookMetadataDto> getBooksPage(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("id"));
+        return bookMetadataRepository.findAll(pageRequest)
+                .map(bookMapper::toDto);
+    }
+
 
     /**
      * Returns a single book as a DTO, if found.

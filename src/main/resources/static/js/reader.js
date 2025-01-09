@@ -1,11 +1,28 @@
-// reader.js
-
-// Adjust this if you have multiple books or pass the bookId differently
-const DEFAULT_BOOK_ID = 5;
-
 $(document).ready(function() {
-    // Load the Table of Contents for the default book when the page is ready
-    loadTOC(DEFAULT_BOOK_ID);
+    // 1) Extract bookId from query param
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookIdParam = urlParams.get('bookId');
+
+    // 2) Convert to number (optional) or handle missing param
+    if (!bookIdParam) {
+        // If no bookId is provided, you could show an error or a default book
+        $('#chapter-content').html('<p>Error: No bookId provided in URL.</p>');
+        return;
+    }
+
+    const bookId = parseInt(bookIdParam, 10);
+    /* OR */
+    /*const defaultBookId = 5;
+    const bookId = bookIdParam ? parseInt(bookIdParam, 10) : defaultBookId;*/
+
+    if (isNaN(bookId)) {
+        // Not a valid number
+        $('#chapter-content').html('<p>Error: Invalid bookId in URL.</p>');
+        return;
+    }
+
+    // 3) Load the TOC for the specified book
+    loadTOC(bookId);
 });
 
 /**

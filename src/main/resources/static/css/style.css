@@ -1,3 +1,4 @@
+/* reader styles */
 body {
     display: flex;
     font-family: Arial, sans-serif;
@@ -26,4 +27,15 @@ body {
 }
 .word:hover {
     background-color: #ffffcc; /* highlight on hover */
+}
+
+/* book list styles */
+.book-item {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
+#pagination-controls {
+    margin-top: 1rem;
 }
