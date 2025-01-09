@@ -1,0 +1,9 @@
+.book-item {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
+#pagination-controls {
+    margin-top: 1rem;
+}

@@ -1,41 +1,80 @@
-/* reader styles */
 body {
+    margin: 0;
+    padding: 0;
     display: flex;
+    height: 100vh;
+    overflow: hidden; /* Prevent the entire page from scrolling */
     font-family: Arial, sans-serif;
+    background-color: #f5f5f5; /* optional page background */
 }
+
+/* Left Nav (TOC) */
 #toc-container {
-    width: 250px;
+    width: 350px;
     border-right: 1px solid #ccc;
     padding: 1rem;
+    box-sizing: border-box;
+    background-color: #fff;
+    /* Independent scrolling */
+    overflow-y: auto;
 }
+
+/* Center Wrapper (scrollable) */
+#center-wrapper {
+    flex: 1;               /* take remaining horizontal space */
+    display: flex;         /* allows aligning center content */
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: auto;      /* make the center column scrollable */
+    box-sizing: border-box;
+}
+
+/* Main Reading Container */
 #reader-container {
-    flex: 1;
+    max-width: 1000px;      /* limit width for comfortable reading */
+    width: 100%;
+    margin: 1rem;          /* spacing from edges */
     padding: 1rem;
+    box-sizing: border-box;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
+
+/* Right Nav (Translations) */
+#translation-container {
+    width: 350px;
+    border-left: 1px solid #ccc;
+    padding: 1rem;
+    box-sizing: border-box;
+    background-color: #fff;
+    /* Independent scrolling */
+    overflow-y: auto;
+}
+
+/* Chapter links in TOC */
 .chapter-link {
     display: block;
     margin-bottom: 0.5rem;
     cursor: pointer;
     color: blue;
 }
+
 .chapter-link:hover {
     text-decoration: underline;
 }
+
+/* Word-level styling */
 .word {
     margin: 0 2px;
     cursor: pointer;
 }
+
 .word:hover {
     background-color: #ffffcc; /* highlight on hover */
 }
 
-/* book list styles */
-.book-item {
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-}
-
-#pagination-controls {
-    margin-top: 1rem;
+/* Hover entire sentence in bold (optional) */
+.sentence:hover {
+    font-weight: bold;
 }

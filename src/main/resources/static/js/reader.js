@@ -125,11 +125,13 @@ function renderChapter(chapterData) {
             case 'h2':
             case 'h3':
             case 'h4':
-                element = document.createElement(block.type);
-                // block.content is an array of arrays of words, but typically headings might just have 1 array
-                element.textContent = block.content.flat().join(' ');
+            case 'h5':
+            case 'h6':
+                // Use our new helper to render the heading with word spans
+                element = renderHeading(block.type, block.content);
                 break;
             case 'p':
+                // Render paragraph with sentence + word spans
                 element = renderParagraph(block.content);
                 break;
             default:
@@ -140,6 +142,63 @@ function renderChapter(chapterData) {
 
         container.append(element);
     });
+}
+
+/**
+ * Create a heading element (h1, h2, etc.) from an array of arrays of words.
+ * Example heading content:
+ * blockContent = [
+ *   ["CHAPTER", "EIGHT"]
+ * ]
+ * Sometimes headings might only have one array, but we'll handle multiple.
+ */
+function renderHeading(blockType, blockContent) {
+    // Create the heading element (e.g., <h1>, <h2>, etc.)
+    const heading = document.createElement(blockType);
+
+    // Each item in blockContent is a sentence array
+    blockContent.forEach(function(sentence, sentenceIndex) {
+        // Create a span to wrap the entire sentence
+        const sentenceSpan = document.createElement('span');
+        sentenceSpan.classList.add('sentence');
+
+        // Optional: attach click/hover listeners for translations, etc.
+        sentenceSpan.addEventListener('click', function() {
+            console.log('Clicked sentence in heading:', sentence);
+            // Future: Make an API call to get translation/definition
+        });
+
+        // For each word in the sentence, create a span
+        sentence.forEach(function(word, wordIndex) {
+            const wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.textContent = word;
+
+            // Optional: attach click/hover listeners for translations, etc.
+            wordSpan.addEventListener('click', function() {
+                console.log('Clicked word in heading:', word);
+                // Future: Make an API call to get translation/definition
+            });
+
+            sentenceSpan.appendChild(wordSpan);
+
+            // Add a space after each word except the last in the sentence
+            if (wordIndex < sentence.length - 1) {
+                sentenceSpan.appendChild(document.createTextNode(' '));
+            }
+        });
+
+        // Append the sentence span to the heading element
+        heading.appendChild(sentenceSpan);
+
+        // Optionally add extra spacing between sentences
+        if (sentenceIndex < blockContent.length - 1) {
+            // Add space or line break between sentences
+            heading.appendChild(document.createTextNode(' '));
+        }
+    });
+
+    return heading;
 }
 
 /**
@@ -154,29 +213,42 @@ function renderParagraph(blockContent) {
 
     // Each item in blockContent is a sentence array
     blockContent.forEach(function(sentence, sentenceIndex) {
-        sentence.forEach(function(word, wordIndex) {
-            // Create a span for each word so we can attach events
-            const span = document.createElement('span');
-            span.classList.add('word');
-            span.textContent = word;
+        // Create a span to wrap the entire sentence
+        const sentenceSpan = document.createElement('span');
+        sentenceSpan.classList.add('sentence');
 
-            // Optionally, attach click/hover listeners for translations, etc.
-            span.addEventListener('click', function(e) {
-                // For now, just log the clicked word to console
+        // Optional: attach click/hover listeners for translations, etc.
+        sentenceSpan.addEventListener('click', function() {
+            console.log('Clicked sentence:', sentence);
+            // Future: Make an API call to get translation/definition
+        });
+
+        // For each word in the sentence, create a span
+        sentence.forEach(function(word, wordIndex) {
+            const wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.textContent = word;
+
+            // Optional: attach click/hover listeners for translations, etc.
+            wordSpan.addEventListener('click', function() {
                 console.log('Clicked word:', word);
                 // Future: Make an API call to get translation/definition
             });
 
-            p.appendChild(span);
+            sentenceSpan.appendChild(wordSpan);
 
-            // Add a space after each word except maybe the last in the sentence
+            // Add a space after each word except the last in the sentence
             if (wordIndex < sentence.length - 1) {
-                p.appendChild(document.createTextNode(' '));
+                sentenceSpan.appendChild(document.createTextNode(' '));
             }
         });
 
-        // Optionally add extra spacing or a line break after each sentence
+        // Append the sentence span to the <p> element
+        p.appendChild(sentenceSpan);
+
+        // Optionally add extra spacing or a line break between sentences
         if (sentenceIndex < blockContent.length - 1) {
+            // Here, we add a space or you might add a period, line break, etc.
             p.appendChild(document.createTextNode(' '));
         }
     });
