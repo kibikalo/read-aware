@@ -1,7 +1,6 @@
 package com.kibikalo.read_aware.upload.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.util.List;
 
