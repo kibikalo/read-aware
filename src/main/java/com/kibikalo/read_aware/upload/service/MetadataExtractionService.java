@@ -1,6 +1,7 @@
 package com.kibikalo.read_aware.upload.service;
 
 import com.kibikalo.read_aware.upload.model.BookMetadata;
+import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
 import nl.siegmann.epublib.domain.Book;
@@ -27,8 +28,15 @@ public class MetadataExtractionService {
 //                metadata.setPublishDate(LocalDateTime.parse(book.getMetadata().getDates().get(0).getValue()));
 //            }
             metadata.setUploadDate(LocalDateTime.now());
-            metadata.setDescription(book.getMetadata().getDescriptions().isEmpty() ? null : book.getMetadata().getDescriptions().get(0));
-            // Assume cover image and genre will be set in a different part of the service
+
+            // Extract and clean description (until implement styling in description too)
+            String rawDescription = book.getMetadata().getDescriptions().isEmpty()
+                    ? null
+                    : book.getMetadata().getDescriptions().get(0);
+            String cleanDescription = rawDescription != null ? Jsoup.parse(rawDescription).text() : null;
+            metadata.setDescription(cleanDescription);
+
+            // Add later
             // metadata.setCoverImagePath(coverImagePath);
             // metadata.setGenre(genre);
 
