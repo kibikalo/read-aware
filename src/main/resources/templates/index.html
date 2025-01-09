@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Book Reader</title>
+  <!-- Example: pulling in jQuery from a CDN (optional). -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Include your custom JavaScript file -->
+  <script src="/js/reader.js"></script>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+</head>
+<body>
+
+<!-- Left side: Table of Contents -->
+<div id="toc-container">
+  <h2>Table of Contents</h2>
+  <!-- We will populate TOC items here dynamically -->
+</div>
+
+<!-- Right side: Reader Content -->
+<div id="reader-container">
+  <h2>Chapter Content</h2>
+  <div id="chapter-content">
+    <!-- AJAX-loaded chapter text goes here -->
+  </div>
+</div>
+
+</body>
+</html>
