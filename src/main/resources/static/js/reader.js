@@ -26,30 +26,6 @@ $(document).ready(function() {
 });
 
 /**
- * Enhance word click handler to call dictionary lookup.
- */
-function onWordClick(word) {
-    // For now, log the clicked word
-    console.log('Clicked word:', word);
-
-    // Make a POST request to our Spring Boot backend
-    $.ajax({
-        url: '/api/dictionary/lookup',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ word: word }),
-        success: function(response) {
-            // response might have definitions, synonyms, etc.
-            renderDictionaryResult(response);
-        },
-        error: function(xhr, status, error) {
-            console.error('Dictionary lookup error:', error);
-            $('#translation-container').html('<p>Error fetching dictionary data.</p>');
-        }
-    });
-}
-
-/**
  * Render the dictionary result in the right navbar (#translation-container).
  * The structure of 'response' depends on how we parse the dictionaryapi.dev result on the backend.
  */
@@ -84,6 +60,13 @@ function renderDictionaryResult(response) {
     const entry = response[0];
     const wordTitle = $('<h3>').text(entry.word);
 
+    // A button to request a translation
+    const translationBtn = $('<button>')
+        .text('Translation')
+        .on('click', function() {
+            requestTranslation(entry.word);
+        });
+
     // Show each meaning
     const meaningContainer = $('<div>');
     if (entry.meanings && entry.meanings.length > 0) {
@@ -103,7 +86,65 @@ function renderDictionaryResult(response) {
         });
     }
 
-    $('#translation-container').append(wordTitle, meaningContainer);
+    // Append the translationBtn (along with wordTitle and meaningContainer)
+    $('#translation-container').append(wordTitle, translationBtn, meaningContainer);
+}
+
+/**
+ * Calls /api/translation/advanced to translate the word to Ukrainian
+ */
+function requestTranslation(word) {
+    $.ajax({
+        url: '/api/translation',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ word: word }),
+        success: function(res) {
+            // e.g. { original: "Hello", translated: "Привіт" }
+            const translatedText = res.translated;
+            showTranslation(word, translatedText);
+        },
+        error: function(xhr, status, error) {
+            console.error('Translation error:', error);
+            $('#translation-container').append('<p>Error during advanced translation.</p>');
+        }
+    });
+}
+
+function showTranslation(originalWord, translatedText) {
+    // You can append or replace content in #translation-container
+    const translationDiv = $('<div>').addClass('translation');
+    translationDiv.html(`
+        <h4>Translation</h4>
+        <p><strong>Original:</strong> ${originalWord}</p>
+        <p><strong>Ukrainian:</strong> ${translatedText}</p>
+    `);
+
+    $('#translation-container').append(translationDiv);
+}
+
+/**
+ * Enhance word click handler to call dictionary lookup.
+ */
+function onWordClick(word) {
+    // For now, log the clicked word
+    console.log('Clicked word:', word);
+
+    // Make a POST request to our Spring Boot backend
+    $.ajax({
+        url: '/api/dictionary/lookup',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ word: word }),
+        success: function(response) {
+            // response might have definitions, synonyms, etc.
+            renderDictionaryResult(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Dictionary lookup error:', error);
+            $('#translation-container').html('<p>Error fetching dictionary data.</p>');
+        }
+    });
 }
 
 /**
