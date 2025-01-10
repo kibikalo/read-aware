@@ -7,3 +7,19 @@
 #pagination-controls {
     margin-top: 1rem;
 }
+
+.book-item {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.cover-image {
+    width: 100px;
+    height: auto;
+    object-fit: cover;
+    border: 1px solid #999;
+}

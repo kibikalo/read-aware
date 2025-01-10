@@ -31,54 +31,48 @@ function loadBooks(page) {
             // Clear the container
             $('#books-container').empty();
 
-            // Render each book
             const books = pageData.content;
             if (books.length === 0) {
                 $('#books-container').append('<p>No books found.</p>');
-                // Possibly disable next button
             } else {
                 books.forEach(function(book) {
-                    // Create a container or list item for each book
                     const bookDiv = $('<div>').addClass('book-item');
 
                     // Title + author
                     const title = $('<h2>').text(book.title);
                     const author = $('<p>').text('Author: ' + (book.author || 'Unknown'));
 
-                    // Description (truncated or full)
+                    // Description
                     const description = $('<p>').text(book.description || 'No description');
 
-                    // "Read" link or button
-                    // If your reading page is /read?bookId=, use that format:
+                    // "Read" link
                     const readLink = $('<a>')
                         .attr('href', `/read?bookId=${book.id}`)
                         .text('Read this book');
 
-                    // Append elements to the bookDiv
-                    bookDiv.append(title, author, description, readLink);
+                    // If the book might have a cover, we can display it
+                    // We'll just put the image at the top, or next to the title
+                    const coverImg = $('<img>')
+                        .addClass('cover-image')
+                        .attr('alt', 'Book Cover')
+                        .attr('src', `/api/books/${book.id}/cover`);
+                    // This will 404 if there's no cover in the backend
 
-                    // Add it to the container
+                    // Append elements
+                    // We'll put the cover at the top
+                    bookDiv.append(coverImg, title, author, description, readLink);
                     $('#books-container').append(bookDiv);
                 });
             }
 
-            // Update pagination display
+            // Update pagination
             const totalPages = pageData.totalPages;
             const currentPageNum = pageData.number;
             $('#page-info').text(`Page ${currentPageNum + 1} of ${totalPages}`);
 
-            // Handle boundary conditions for prev/next
-            if (currentPageNum <= 0) {
-                $('#prev-page').prop('disabled', true);
-            } else {
-                $('#prev-page').prop('disabled', false);
-            }
-
-            if (currentPageNum >= totalPages - 1) {
-                $('#next-page').prop('disabled', true);
-            } else {
-                $('#next-page').prop('disabled', false);
-            }
+            // Prev/Next button states
+            $('#prev-page').prop('disabled', currentPageNum <= 0);
+            $('#next-page').prop('disabled', currentPageNum >= totalPages - 1);
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.error('Failed to load books:', textStatus, errorThrown);

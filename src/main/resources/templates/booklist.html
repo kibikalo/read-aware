@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Book List</title>
-    <!-- jQuery, etc. -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Include our booklist JavaScript -->
-    <script src="/js/booklist.js"></script>
-    <link rel="stylesheet" th:href="@{/css/booklist.css}" />
-</head>
-<body>
-<h1>All Books</h1>
+    <head>
+        <title>Book List</title>
+        <!-- jQuery, etc. -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- Include our booklist JavaScript -->
+        <script src="/js/booklist.js"></script>
+        <link rel="stylesheet" th:href="@{/css/booklist.css}" />
+    </head>
+    <body>
+        <h1>All Books</h1>
 
-<!-- Container for the list of books -->
-<div id="books-container"></div>
+        <!-- Container for the list of books -->
+        <div id="books-container"></div>
 
-<!-- Pagination controls -->
-<div id="pagination-controls">
-    <button id="prev-page">Previous</button>
-    <span id="page-info"></span>
-    <button id="next-page">Next</button>
-</div>
+        <!-- Pagination controls -->
+        <div id="pagination-controls">
+            <button id="prev-page">Previous</button>
+            <span id="page-info"></span>
+            <button id="next-page">Next</button>
+        </div>
 
-</body>
+    </body>
 </html>

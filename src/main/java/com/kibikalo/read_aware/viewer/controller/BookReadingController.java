@@ -1,27 +1,39 @@
 package com.kibikalo.read_aware.viewer.controller;
 
+import com.kibikalo.read_aware.upload.model.BookMetadata;
+import com.kibikalo.read_aware.upload.repo.BookMetadataRepository;
 import com.kibikalo.read_aware.viewer.ResourceNotFoundException;
 import com.kibikalo.read_aware.viewer.dto.BookMetadataDto;
 import com.kibikalo.read_aware.viewer.dto.TableOfContentsDto;
 import com.kibikalo.read_aware.viewer.service.BookService;
+import com.kibikalo.read_aware.viewer.service.CoverResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
 public class BookReadingController {
 
     private final BookService bookService;
+    private final BookMetadataRepository bookMetadataRepository;
 
-    public BookReadingController(BookService bookService) {
+    public BookReadingController(BookService bookService, BookMetadataRepository bookMetadataRepository) {
         this.bookService = bookService;
+        this.bookMetadataRepository = bookMetadataRepository;
     }
 
     /**
@@ -76,7 +88,27 @@ public class BookReadingController {
                     .body("Error reading chapter content: " + e.getMessage());
         }
     }
+
+    /**
+     * GET /api/books/{bookId}/cover
+     * Returns the cover image file as an image/jpeg (or image/png) response.
+     */
+    @GetMapping("/{bookId}/cover")
+    public ResponseEntity<Resource> getBookCover(@PathVariable Long bookId) {
+        try {
+            // Service call does the heavy lifting
+            CoverResource cover = bookService.getBookCover(bookId);
+
+            return ResponseEntity.ok()
+                    .contentType(cover.getMediaType())
+                    .body(cover.getResource());
+
+        } catch (ResourceNotFoundException e) {
+            // If the cover doesn't exist or the book is missing
+            return ResponseEntity.notFound().build();
+        } catch (IOException e) {
+            // If there's an IO error reading the file
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
-
-
-
