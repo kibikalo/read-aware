@@ -26,6 +26,87 @@ $(document).ready(function() {
 });
 
 /**
+ * Enhance word click handler to call dictionary lookup.
+ */
+function onWordClick(word) {
+    // For now, log the clicked word
+    console.log('Clicked word:', word);
+
+    // Make a POST request to our Spring Boot backend
+    $.ajax({
+        url: '/api/dictionary/lookup',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ word: word }),
+        success: function(response) {
+            // response might have definitions, synonyms, etc.
+            renderDictionaryResult(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Dictionary lookup error:', error);
+            $('#translation-container').html('<p>Error fetching dictionary data.</p>');
+        }
+    });
+}
+
+/**
+ * Render the dictionary result in the right navbar (#translation-container).
+ * The structure of 'response' depends on how we parse the dictionaryapi.dev result on the backend.
+ */
+function renderDictionaryResult(response) {
+    // Clear old data
+    $('#translation-container').empty();
+
+    if (!response || response.length === 0) {
+        $('#translation-container').html('<p>No definition found.</p>');
+        return;
+    }
+
+    // response might be an array of dictionary entries.
+    // Let's assume we do some minimal parsing.
+    // dictionaryapi.dev returns something like:
+    // [
+    //   {
+    //     "word": "wind",
+    //     "phonetics": [...],
+    //     "meanings": [
+    //       {
+    //         "partOfSpeech": "noun",
+    //         "definitions": [ { "definition": "...", "synonyms": [...], "antonyms": [...] } ],
+    //         ...
+    //       }
+    //     ],
+    //     ...
+    //   }
+    // ]
+
+    // We'll render the first entry's data, for example.
+    const entry = response[0];
+    const wordTitle = $('<h3>').text(entry.word);
+
+    // Show each meaning
+    const meaningContainer = $('<div>');
+    if (entry.meanings && entry.meanings.length > 0) {
+        entry.meanings.forEach((meaning) => {
+            const pos = meaning.partOfSpeech;
+            const definitionsList = $('<ul>');
+
+            if (meaning.definitions) {
+                meaning.definitions.forEach((defObj) => {
+                    const defItem = $('<li>').text(defObj.definition);
+                    definitionsList.append(defItem);
+                });
+            }
+
+            meaningContainer.append($('<h4>').text(pos));
+            meaningContainer.append(definitionsList);
+        });
+    }
+
+    $('#translation-container').append(wordTitle, meaningContainer);
+}
+
+/**
  * Fetch the TOC from the server for the given bookId and render it in #toc-container.
  */
 function loadTOC(bookId) {
@@ -176,8 +257,7 @@ function renderHeading(blockType, blockContent) {
 
             // Optional: attach click/hover listeners for translations, etc.
             wordSpan.addEventListener('click', function() {
-                console.log('Clicked word in heading:', word);
-                // Future: Make an API call to get translation/definition
+                onWordClick(word);
             });
 
             sentenceSpan.appendChild(wordSpan);
@@ -231,8 +311,7 @@ function renderParagraph(blockContent) {
 
             // Optional: attach click/hover listeners for translations, etc.
             wordSpan.addEventListener('click', function() {
-                console.log('Clicked word:', word);
-                // Future: Make an API call to get translation/definition
+                onWordClick(word);
             });
 
             sentenceSpan.appendChild(wordSpan);
