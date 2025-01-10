@@ -7,7 +7,7 @@ let currentWord = null;
 /**
  * Called by reader.js when a user clicks on any word.
  */
-function onWordClick(word) {
+function onWordClick(word, sentenceElement) {
     currentWord = word;
 
     // Create a new cache entry if we haven't seen this word before
@@ -15,9 +15,12 @@ function onWordClick(word) {
         translationCache[word] = {
             dictionary: null,
             translation: null,
-            context: null // for future
+            contextData: null
         };
     }
+
+    // Also store the sentence text so we can reuse if needed
+    translationCache[word].originalSentence = sentenceElement.textContent;
 
     // Show dictionary by default
     showTranslationPanel(word, 'dictionary');
@@ -61,11 +64,11 @@ function showTranslationPanel(word, panelType) {
             fetchTranslation(word);
         }
     } else if (panelType === 'context') {
-        // For future usage: context-based translation, etc.
-        if (translationCache[word].context) {
-            renderContextResult(translationCache[word].context);
+        // If we have a cached context translation, display it
+        if (translationCache[word].contextData) {
+            renderContextResult(word, translationCache[word].contextData);
         } else {
-            $('#translation-container').append('<p>Context feature coming soon...</p>');
+            fetchContextTranslation(word);
         }
     }
 }
@@ -167,8 +170,51 @@ function renderTranslationResult(word, translationResponse) {
 }
 
 /**
- * Placeholder for context-based feature.
+ * Sends the entire sentence to /api/translation/context
  */
-function renderContextResult(contextData) {
-    // ...
+function fetchContextTranslation(word) {
+    // The stored original sentence (from onWordClick)
+    const sentence = translationCache[word].originalSentence;
+    if (!sentence) {
+        $('#translation-container').append('<p>No sentence found for context.</p>');
+        return;
+    }
+
+    $('#translation-container').append('<p>Loading context-based translation...</p>');
+
+    $.ajax({
+        url: '/api/translation/context',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            selectedText: word,
+            context: sentence
+        }),
+        success: function(res) {
+            // e.g. { originalContext: "...", translatedContext: "...", selectedText: "wind" }
+            translationCache[word].contextData = res;
+            renderContextResult(word, res);
+        },
+        error: function(xhr, status, error) {
+            console.error('Context translation error:', error);
+            $('#translation-container').append('<p>Error during context translation.</p>');
+        }
+    });
+}
+
+/**
+ * Render the context translation in the right navbar
+ */
+function renderContextResult(word, contextResponse) {
+    // Remove loading text
+    $('#translation-container').find('p:contains("Loading context-based translation")').remove();
+
+    const div = $('<div>').addClass('context-translation');
+    div.html(`
+        <h3>Context-Based Translation</h3>
+        <p><strong>Original Sentence:</strong> ${contextResponse.originalContext}</p>
+        <p><strong>Translated Sentence:</strong> ${contextResponse.translatedContext}</p>
+    `);
+
+    $('#translation-container').append(div);
 }

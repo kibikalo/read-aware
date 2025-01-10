@@ -70,8 +70,10 @@ function renderHeading(blockType, blockContent) {
             wordSpan.textContent = word;
 
             // On click, call our dictionary logic
-            wordSpan.addEventListener('click', function() {
-                onWordClick(word); // from dictionary.js
+            wordSpan.addEventListener('click', function(evt) {
+                evt.stopPropagation();
+                // Now we pass the entire sentenceSpan to onWordClick
+                onWordClick(word, sentenceSpan);
             });
 
             sentenceSpan.appendChild(wordSpan);
@@ -104,8 +106,10 @@ function renderParagraph(blockContent) {
             wordSpan.classList.add('word');
             wordSpan.textContent = word;
 
-            wordSpan.addEventListener('click', function() {
-                onWordClick(word); // from dictionary.js
+            wordSpan.addEventListener('click', function(evt) {
+                evt.stopPropagation();
+                // Now we pass the entire sentenceSpan to onWordClick
+                onWordClick(word, sentenceSpan);
             });
 
             sentenceSpan.appendChild(wordSpan);
