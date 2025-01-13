@@ -1,0 +1,31 @@
+#site-header {
+    background-color: #424242; /* or whichever from your palette */
+    color: #e2e1d6;            /* text color */
+    padding: 1rem;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto; /* center horizontally */
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #e2e1d6;
+    text-decoration: none;
+    margin-right: 2rem;
+}
+
+.nav-links a {
+    color: #e2e1d6;
+    text-decoration: none;
+    margin: 0 1rem;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}

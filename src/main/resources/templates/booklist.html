@@ -7,18 +7,24 @@
         <!-- Include our booklist JavaScript -->
         <script src="/js/booklist.js"></script>
         <link rel="stylesheet" th:href="@{/css/booklist.css}" />
+        <link rel="stylesheet" th:href="@{/css/header.css}" />
     </head>
     <body>
-        <h1>All Books</h1>
+        <header th:insert="header :: header"></header>
 
-        <!-- Container for the list of books -->
-        <div id="books-container"></div>
+        <!-- Main container: used to center content & add side margins -->
+        <div class="main-container">
 
-        <!-- Pagination controls -->
-        <div id="pagination-controls">
-            <button id="prev-page">Previous</button>
-            <span id="page-info"></span>
-            <button id="next-page">Next</button>
+            <!-- Book grid container -->
+            <div id="books-grid"></div>
+
+            <!-- Pagination controls -->
+            <div id="pagination-controls">
+                <button id="prev-page">Previous</button>
+                <span id="page-info"></span>
+                <button id="next-page">Next</button>
+            </div>
+
         </div>
 
     </body>

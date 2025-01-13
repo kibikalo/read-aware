@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Header Fragment</title>
+  </head>
+  <body>
+
+    <th:block th:fragment="header">
+      <div id="site-header">
+        <div class="header-content">
+          <a href="/" class="logo">Read Aware</a>
+          <nav class="nav-links">
+            <a href="/books">Book List</a>
+            <a href="/upload">Upload Book</a>
+            <!-- Add more links as needed -->
+          </nav>
+        </div>
+      </div>
+    </th:block>
+
+  </body>
+</html>

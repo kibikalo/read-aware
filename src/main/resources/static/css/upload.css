@@ -1,16 +1,79 @@
-.upload-container {
-    width: 50%;
-    margin: 0 auto;
-    text-align: center;
-    padding: 2rem;
-    border: 2px dashed #ccc;
-    border-radius: 5px;
-}
-.upload-container.dragover {
-    background-color: #f0f8ff;
-    border-color: #888;
+/* 
+   Color Palette:
+   #e2e1d6 (light background)
+   #424242 (dark text or headings)
+   #e2dcc1 (alternative background)
+   #3e3e3e (text color variant)
+   #d9ddb5 (accent or highlight)
+*/
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #e2e1d6; /* main page background */
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    color: #3e3e3e;
 }
 
-.hidden {
+.page-title {
+    text-align: center;
+    margin: 1rem 0;
+    color: #424242;
+}
+
+.upload-page-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 2rem auto; /* center horizontally */
+    text-align: center; /* center the content inside */
+}
+
+.upload-container {
+    border: 3px dashed #424242;
+    border-radius: 8px;
+    background-color: #e2dcc1;
+    padding: 2rem;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    margin-bottom: 1.5rem;
+}
+
+/* Hover or dragover effect */
+.upload-container.dragover {
+    background-color: #d9ddb5; /* highlight for dragover */
+    border-color: #3e3e3e;
+}
+
+.upload-container p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+/* The hidden file input: we rely on clicking the container instead */
+.hidden-file-input {
     display: none;
+}
+
+.upload-status {
+    font-size: 1rem;
+    color: #424242;
+    margin-top: 1rem;
+}
+
+/* If you want some animation or highlight on success/error, you can style it here */
+.upload-status.success {
+    color: green;
+}
+.upload-status.error {
+    color: red;
+}
+
+/* Make sure <a> or any other clickable elements in the status area or further steps are styled */
+a {
+    color: #424242;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
 }

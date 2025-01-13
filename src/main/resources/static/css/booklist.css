@@ -1,25 +1,135 @@
-.book-item {
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
+/* 
+   Color Palette:
+   #e2e1d6 (light background)
+   #424242 (dark text or headings)
+   #e2dcc1 (alternative background)
+   #3e3e3e (text color variant)
+   #d9ddb5 (accent or highlight)
+*/
+
+/* Overall page styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif; /* or another suitable font */
+    background-color: #e2e1d6; /* main background */
+    color: #3e3e3e;           /* default text color */
 }
 
-#pagination-controls {
+/* Page Title */
+h1 {
+    text-align: center;
+    color: #424242;
     margin-top: 1rem;
 }
 
-.book-item {
-    border: 1px solid #ccc;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
+/* Main container to center the content & add margins */
+.main-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 1rem auto 2rem auto; /* top/bottom, auto left/right */
 }
 
+/* Grid for books */
+#books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem; /* space between cards */
+}
+
+/* Book card */
+.book-item {
+    background-color: #e2dcc1; /* slight contrast from body */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden; /* helps if we do text truncation */
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Book cover image at ~250 or 300px wide */
 .cover-image {
-    width: 100px;
+    width: 100%;
+    max-width: 300px;
     height: auto;
     object-fit: cover;
+    align-self: center; /* center image horizontally within card */
     border: 1px solid #999;
+    margin-bottom: 1rem;
+}
+
+/* Book Title */
+.book-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+    color: #424242;
+}
+
+/* Author text */
+.book-author {
+    font-style: italic;
+    margin-bottom: 0.5rem;
+}
+
+/* Description with line clamping to avoid huge text blocks */
+.book-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;           /* show up to 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 1rem;
+}
+
+/* Link or button for reading */
+.read-link {
+    margin-top: auto; /* push to bottom if card is tall */
+    color: #3e3e3e;
+    background-color: #d9ddb5;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    text-align: center;
+    display: inline-block;
+}
+
+.read-link:hover {
+    background-color: #c5c99b; /* darker variant on hover */
+}
+
+/* Pagination controls */
+#pagination-controls {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+#pagination-controls button {
+    background-color: #d9ddb5;
+    color: #424242;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+#pagination-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#pagination-controls button:hover:not(:disabled) {
+    background-color: #c5c99b;
+}
+
+#page-info {
+    margin: 0 1rem;
+    font-weight: bold;
 }

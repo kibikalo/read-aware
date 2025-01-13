@@ -5,18 +5,24 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         <link rel="stylesheet" th:href="@{/css/upload.css}" />
+        <link rel="stylesheet" th:href="@{/css/header.css}" />
     </head>
     <body>
+        <header th:insert="header :: header"></header>
 
-        <h1>Upload EPUB Book</h1>
+        <!-- Main container to center contents and add margins -->
+        <div class="upload-page-container">
 
-        <div class="upload-container" id="upload-container">
-            <p>Drag & Drop your EPUB file here</p>
-            <p>Or click to select a file</p>
-            <input type="file" id="fileInput" accept=".epub" class="hidden"/>
+            <!-- The upload zone (drag & drop + click) -->
+            <div class="upload-container" id="upload-container">
+                <p>Drag &amp; Drop your EPUB file here</p>
+                <p>Or click to select a file</p>
+                <input type="file" id="fileInput" accept=".epub" class="hidden-file-input" />
+            </div>
+
+            <!-- Status area for feedback -->
+            <div id="upload-status" class="upload-status"></div>
         </div>
-
-        <div id="upload-status"></div>
 
         <script src="/js/upload.js"></script>
     </body>

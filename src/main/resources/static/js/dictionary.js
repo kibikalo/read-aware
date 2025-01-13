@@ -37,13 +37,13 @@ function showTranslationPanel(word, panelType) {
     // Add the top buttons
     const btnContainer = $('<div>').addClass('translation-buttons');
 
-    const dictBtn = $('<button>').text('Dictionary').on('click', () => {
+    const dictBtn = $('<button>').addClass('trans-btn').text('Dictionary').on('click', () => {
         showTranslationPanel(word, 'dictionary');
     });
-    const transBtn = $('<button>').text('Translation').on('click', () => {
+    const transBtn = $('<button>').addClass('trans-btn').text('Translation').on('click', () => {
         showTranslationPanel(word, 'translation');
     });
-    const ctxBtn = $('<button>').text('Context').on('click', () => {
+    const ctxBtn = $('<button>').addClass('trans-btn').text('Context').on('click', () => {
         showTranslationPanel(word, 'context');
     });
 

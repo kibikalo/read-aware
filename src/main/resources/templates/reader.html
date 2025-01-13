@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Book Reader</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/toc.js"></script>
+    <script src="/js/dictionary.js"></script>
+    <script src="/js/reader.js"></script>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+  </head>
+  <body>
+    <!-- Insert the header fragment -->
+    <header th:insert="header :: header"></header>
+
+    <!-- The main reading layout -->
+    <div id="reader-layout">
+      <!-- Left navbar for Table of Contents -->
+      <div id="toc-container"> ... </div>
+
+      <!-- Center reading area -->
+      <div id="center-wrapper">
+        <div id="reader-container">
+          <div id="chapter-content"> ... </div>
+        </div>
+      </div>
+
+      <!-- Right navbar for translation/dictionary -->
+      <div id="translation-container"> ... </div>
+    </div>
+
+  </body>
+</html>

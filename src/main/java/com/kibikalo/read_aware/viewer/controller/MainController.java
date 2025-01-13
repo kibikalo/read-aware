@@ -8,7 +8,7 @@ public class MainController {
 
     @GetMapping("/read")
     public String readPage() {
-        return "index";
+        return "reader";
     }
 
     @GetMapping("/books")
