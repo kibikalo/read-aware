@@ -1,0 +1,16 @@
+.upload-container {
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 2rem;
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+}
+.upload-container.dragover {
+    background-color: #f0f8ff;
+    border-color: #888;
+}
+
+.hidden {
+    display: none;
+}
