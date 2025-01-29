@@ -44,6 +44,7 @@ The backend uses a layered architecture:
     - Saving the file to a structured directory.
     - Parsing content into JSON chapters with sentences and words.
 3. Metadata are stored in PostgreSQL, and processed content as JSON files.
+![](https://github.com/kibikalo/read-aware/blob/master/Screenshot%202025-01-22%20142218.png)
 
 #### Translation and Definitions
 1. Frontend sends requests to endpoints such as `/api/dictionary/lookup` or `/api/translation`.
@@ -70,11 +71,14 @@ The frontend uses a hybrid approach combining:
 
 ### UI Layout
 - **Book List Page**: Displays books with pagination.
+![](https://github.com/kibikalo/read-aware/blob/master/Screenshot%202025-01-22%20230811.png)
 - **Reader Page**: Three-column layout with:
     - Table of Contents (TOC).
     - Main reading area.
     - Translation and dictionary panel.
+![](https://github.com/kibikalo/read-aware/blob/master/Screenshot%202025-01-22%20230914.png)
 - **Upload Page**: Drag-and-drop interface for uploading EPUBs.
+![](https://github.com/kibikalo/read-aware/blob/master/Screenshot%202025-01-22%20231241.png)
 
 ---
 
