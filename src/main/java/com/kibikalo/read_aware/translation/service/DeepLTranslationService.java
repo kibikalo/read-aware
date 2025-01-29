@@ -39,7 +39,6 @@ public class DeepLTranslationService {
         //    text=Your text
         //    source_lang=EN
         //    target_lang=UK
-        // More info: https://www.deepl.com/docs-api
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
